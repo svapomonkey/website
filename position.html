@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SVAPOMONKEY - Dove siamo. Trova i nostri negozi a Verona.">
+    <title>Dove Siamo - SvapoMonkey</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <link rel="shortcut icon" href="img/logo.png">
+    <link rel="apple-touch-icon" href="img/logo.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+    /* ============================================
+       SVAPOMONKEY - GLASSMORPHISM MODERN STYLE
+    ============================================ */
+    :root {
+        --color-primary: rgba(255, 187, 0, 0.99);
+        --color-secondary: #b97713;
+        --color-accent: #C87E3A;
+        --color-bg: #1A1A1A;
+        --color-text: #FFFDF5;
+        --glass-bg: rgba(200, 126, 58, 0.2);
+        --glass-border: rgba(255, 184, 77, 0.4);
+        --glass-blur: 10px;
+        --shadow-primary: 0 0 20px rgba(255, 198, 92, 0.4);
+        --shadow-secondary: 0 0 20px rgba(255, 184, 77, 0.4);
+        --shadow-accent: 0 0 20px rgba(200, 126, 58, 0.4);
+        --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.2);
+        --transition-base: all 0.3s ease;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--color-bg);
+        color: var(--color-text);
+        line-height: 1.6;
+        overflow-x: hidden;
+        min-height: 100vh;
+        background-image:
+            radial-gradient(circle at 20% 50%, rgba(255,198,92,0.12) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(200,126,58,0.15) 0%, transparent 50%),
+            radial-gradient(circle at 40% 90%, rgba(255,184,77,0.10) 0%, transparent 50%);
+        background-attachment: fixed;
+    }
+
+    main { min-height: calc(100vh - 81px - 200px); }
+    img { max-width: 100%; height: auto; }
+    a { transition: var(--transition-base); }
+
+    .text-gradient {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* ====== NAVBAR ====== */
+    .navbar {
+        position: fixed; top: 0; left: 0; width: 100%;
+        height: clamp(60px, 8vh, 80px);
+        background: rgba(200, 126, 58, 0.95);
+        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--glass-border);
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 clamp(15px, 3vw, 40px);
+        z-index: 1000; transition: var(--transition-base);
+    }
+    .navbar-brand {
+        display: flex; align-items: center; gap: clamp(8px,1.5vw,12px);
+        text-decoration: none; color: var(--color-text);
+        font-size: clamp(1.15rem,3vw,2rem); font-weight: 700;
+        white-space: nowrap; flex-shrink: 0; z-index: 1001;
+        transition: var(--transition-base);
+    }
+    .navbar-brand:hover { color: var(--color-primary); }
+    .navbar-logo { height: clamp(35px,6vh,55px); width: auto; object-fit: contain; transition: var(--transition-base); }
+    .navbar-brand:hover .navbar-logo { transform: scale(1.05); }
+
+    .navbar-menu {
+        display: flex; list-style: none;
+        gap: clamp(15px,2.5vw,25px); margin: 0 0 0 auto; padding: 0; align-items: center;
+    }
+    .navbar-item { list-style: none; flex-shrink: 0; }
+    .navbar-link {
+        color: var(--color-text); text-decoration: none;
+        font-size: clamp(0.85rem,1.4vw,1rem); font-weight: 500;
+        padding: clamp(6px,1vw,10px) clamp(8px,1.5vw,12px);
+        border-radius: 8px; position: relative;
+        transition: var(--transition-base); display: inline-block; white-space: nowrap;
+    }
+    .navbar-link::after {
+        content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+        width: 0; height: 2px;
+        background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+        transition: var(--transition-base);
+    }
+    .navbar-link:hover { color: #ffe7b9; background: rgba(255,187,0,0.99); box-shadow: var(--shadow-accent); }
+    .navbar-link:hover::after { width: 80%; }
+    .navbar-link.active-link { color: var(--color-text); background: rgba(131,95,60,0.5); }
+
+    /* Burger */
+    #burger { display: none; }
+    .burger { position: relative; width: 30px; height: 22.5px; background: transparent; cursor: pointer; display: block; }
+    .burger span { display: block; position: absolute; height: 3px; width: 100%; background: #FFFDF5; border-radius: 9px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+    .burger span:nth-of-type(1) { top: 0px; transform-origin: left center; }
+    .burger span:nth-of-type(2) { top: 50%; transform: translateY(-50%); transform-origin: left center; }
+    .burger span:nth-of-type(3) { top: 100%; transform-origin: left center; transform: translateY(-100%); }
+    #burger:checked + .burger span:nth-of-type(1) { transform: rotate(45deg); top: 0px; left: 5px; }
+    #burger:checked + .burger span:nth-of-type(2) { width: 0%; opacity: 0; }
+    #burger:checked + .burger span:nth-of-type(3) { transform: rotate(-45deg); top: 21px; left: 5px; }
+
+    @media (max-width: 1399.98px) {
+        .burger { display: block; z-index: 2001; }
+        .navbar { height: 8vh; }
+        .navbar-logo { height: clamp(35px,5vh,45px); }
+        .navbar-menu {
+            display: none; position: fixed; top: 8vh; right: 20px; width: 250px;
+            background: #C87E3AF2; border-radius: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            padding: 15px 0; z-index: 2000; flex-direction: column; gap: 10px;
+            animation: slideInFromRight 0.3s ease; list-style-type: none; align-items: flex-start;
+        }
+        #burger:checked ~ .navbar-menu { display: flex; }
+        .navbar-item, .navbar-item-login { list-style: none; padding: 0 10px; width: 100%; }
+        .navbar-link { display: flex; align-items: center; color: #fff3e2; gap: 10px; font-size: 1.1rem; font-weight: 600; padding: 8px 12px; border-radius: 6px; width: 100%; }
+        .navbar-item-login { border-top: 1.5px solid #e0e0e0; margin-top: 8px; padding-top: 18px; }
+        .d-lg-only { display: none !important; }
+        .d-lg-none-show { display: block; }
+    }
+    @media (min-width: 1400px) {
+        .burger { display: none !important; }
+        .navbar-menu { display: flex !important; position: static; background: none; box-shadow: none; padding: 0; flex-direction: row; }
+        .d-lg-none-show { display: none !important; }
+    }
+    @keyframes slideInFromRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+    /* ====== CARDS ====== */
+    .card-glass {
+        background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+        border: 1px solid var(--glass-border); border-radius: clamp(15px,2.5vw,20px);
+        padding: clamp(15px,3vw,25px); box-shadow: var(--shadow-glass);
+        transition: var(--transition-base); position: relative; overflow: hidden;
+    }
+
+    /* ====== BUTTONS ====== */
+    .btn-primary-glass {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        color: white; border: none; padding: clamp(10px,2vw,14px) clamp(20px,4vw,35px);
+        border-radius: clamp(8px,1.5vw,12px); font-size: clamp(0.9rem,2vw,1.1rem); font-weight: 600;
+        cursor: pointer; transition: var(--transition-base); box-shadow: var(--shadow-primary);
+        text-decoration: none; display: inline-block; text-align: center;
+    }
+    .btn-primary-glass:hover { transform: translateY(-3px); box-shadow: var(--shadow-primary); color: white; }
+
+    /* ====== HERO ====== */
+    .hero-section {
+        margin-top: clamp(100px,10vh,120px); padding: 0 clamp(15px,3vw,20px);
+        text-align: center; position: relative;
+        display: flex; align-items: center; justify-content: center; width: 100%;
+    }
+    .hero-section .container { width: 100%; max-width: 1350px; margin: 0 auto; padding: 0; }
+    .hero-section .card-glass {
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        width: 100%; max-width: 1350px; margin: 0 auto;
+        padding: clamp(20px,3.5vw,40px) clamp(10px,2vw,20px);
+    }
+    .hero-title {
+        font-size: clamp(1.5rem,5vw,3.5rem); font-weight: 700;
+        margin-bottom: clamp(10px,2vw,20px);
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        animation: fadeInUp 1s ease; line-height: 1.2;
+    }
+    .hero-subtitle {
+        font-size: clamp(0.9rem,2.5vw,1.25rem); color: rgba(245,245,245,0.9);
+        animation: fadeInUp 1.2s ease; line-height: 1.5; max-width: 800px;
+    }
+
+    /* ====== SECTIONS ====== */
+    .section-container { max-width: 1400px; margin: clamp(20px,4vw,30px) auto; padding: 0 clamp(15px,3vw,20px); }
+    .section-title {
+        font-size: clamp(1.8rem,5vw,2.5rem); font-weight: 700; text-align: center;
+        margin-bottom: clamp(30px,5vw,50px);
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ====== NEGOZIO NOME ====== */
+    .neg-name {
+        font-size: clamp(1.5rem,4vw,3vw); margin-bottom: 0;
+        background: linear-gradient(135deg, #FFBB00FC, #FFB84DFF);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        font-weight: bold;
+    }
+
+    /* ====== MAP ====== */
+    .map-container { border-radius: 16px; overflow: hidden; margin-top: 12px; }
+    .map-container iframe { display: block; border-radius: 16px; }
+
+    /* ====== CONTACT ICON BOX ====== */
+    .contact-icon-box {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        width: 48px; height: 48px; min-width: 48px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 12px; border: 2px solid var(--color-primary); flex-shrink: 0;
+    }
+    .contact-icon-box i { font-size: 1.5rem; color: white; }
+
+    /* ====== ORARI TABLE ====== */
+    .orari-glass-container {
+        backdrop-filter: blur(var(--glass-blur));
+        background: var(--glass-bg); border-radius: clamp(14px,3vw,22px);
+        box-shadow: var(--shadow-glass); padding: clamp(0.5rem,2vw,1.5rem); width: 100%;
+    }
+    .orari-table { width: 100%; min-width: 320px; border-collapse: separate; border-spacing: 0; background: transparent; font-size: clamp(0.85rem,1.8vw,1rem); }
+    .orari-table thead tr { background: rgba(255,255,255,0.10); }
+    .orari-table th, .orari-table td {
+        padding: clamp(0.35rem,1.2vw,0.75rem) clamp(0.4rem,1.5vw,1rem);
+        color: #fff; font-weight: 600; border: none; text-align: left; font-size: clamp(0.85rem,1.8vw,1rem);
+    }
+    .orari-table th { font-weight: 700; letter-spacing: 1px; }
+    .orari-table th:first-child { border-top-left-radius: 12px; }
+    .orari-table th:last-child { border-top-right-radius: 12px; }
+    .orari-table tbody tr { transition: background 0.2s; }
+    .orari-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.07); }
+    .orari-table tbody tr:nth-child(odd) { background: rgba(255,255,255,0.03); }
+    .orari-table tbody tr:hover { background: rgba(255,255,255,0.13); }
+    .orari-table tr.oggi-row { background: rgba(255,187,0,0.12) !important; }
+    .orari-table tr.oggi-row td:first-child { color: var(--color-primary); font-weight: 700; }
+
+    .orari-badge {
+        display: inline-block;
+        padding: 0.2em 0.8em;
+        border-radius: 14px;
+        font-size: 0.95em;
+        font-weight: 600;
+        color: var(--color-text);
+        margin-right: 0.4em;
+        letter-spacing: 0.5px;
+    }
+
+    .orari-chiuso {
+        color: #e53935;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    /* ====== DIVIDER ====== */
+    .divider-gradient { border: none; height: 2px; background: linear-gradient(90deg, transparent, var(--color-primary), transparent); opacity: 0.5; margin: clamp(20px,4vw,40px) auto; max-width: 1400px; }
+
+    /* ====== FOOTER ====== */
+    .footer {
+        background: rgba(200,126,58,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid var(--glass-border);
+        padding: clamp(30px,5vw,40px) clamp(3%,5vw,5%);
+        text-align: center; margin-top: clamp(50px,8vw,80px);
+    }
+    .footer-content { max-width: 1200px; margin: 0 auto; }
+    .footer-links { display: flex; justify-content: center; gap: clamp(15px,3vw,30px); flex-wrap: wrap; }
+    .footer-link {
+        color: var(--color-text); text-decoration: none; transition: var(--transition-base);
+        position: relative; padding: clamp(3px,0.8vw,5px) clamp(6px,1.5vw,10px); font-size: clamp(0.9rem,1.8vw,1rem);
+    }
+    .footer-link::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)); transition: var(--transition-base); }
+    .footer-link:hover { color: var(--color-primary); }
+    .footer-link:hover::after { width: 100%; }
+
+    /* ====== ANIMATIONS ====== */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .animate-on-scroll.animated { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 700px) {
+        .orari-glass-container { padding: 0.5rem; border-radius: 14px; }
+        .orari-table { min-width: 260px; }
+    }
+    </style>
+</head>
+<body>
+
+<!-- ====== NAVBAR ====== -->
+<nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+        <img src="img/logo.png" alt="SVAPOMONKEY logo" class="navbar-logo" width="44" height="44" loading="lazy">
+        <span>SVAPOMONKEY</span>
+    </a>
+
+    <input type="checkbox" id="burger">
+    <label class="burger" for="burger"><span></span><span></span><span></span></label>
+
+    <ul class="navbar-menu" id="navbarMenu">
+        <li class="navbar-item"><a href="index.html" class="navbar-link">Home</a></li>
+        <li class="navbar-item"><a href="position.html" class="navbar-link active-link">Dove siamo</a></li>
+        <li class="navbar-item"><a href="#" class="navbar-link">Carta Fedeltà</a></li>
+    </ul>
+</nav>
+
+<!-- ====== MAIN ====== -->
+<main class="posizione-main">
+
+    <!-- HERO -->
+    <section class="hero-section">
+        <div class="container text-center card-glass">
+            <h1 class="hero-title"><i class="fas fa-map-marker-alt"></i> Dove Siamo</h1>
+            <p class="hero-subtitle">Vieni a trovarci nei nostri negozi a Verona. Ti aspettiamo!</p>
+        </div>
+    </section>
+
+    <!-- Le sezioni dei negozi vengono generate da JS -->
+    <div id="negozi-container"></div>
+
+</main>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer mt-5">
+    <div class="footer-content">
+        <div class="mb-3">
+            <h5 style="font-weight:700;" class="text-gradient"><i class="fas fa-smoking me-2"></i>SVAPOMONKEY</h5>
+            <p class="mb-2">Il tuo negozio di fiducia per sigarette elettroniche e liquidi premium</p>
+        </div>
+        <div class="footer-links mb-3">
+            <a href="https://github.com/alefaccincani" class="footer-link" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github me-1"></i>Creator
+            </a>
+        </div>
+        <p class="mb-0"><small>&copy; 2025 SVAPOMONKEY3.0. Tutti i diritti riservati.</small></p>
+    </div>
+</footer>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ===== DATI NEGOZI =====
+const negozi = [
+    {
+        id: 1,
+        nome: "Borgo Venezia",
+        indirizzo: "Via Giovanni Verardo Zeviani, 10c",
+        cap: "37131 Verona (VR)",
+        telefono: "0454578952",
+        mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5445.917668929395!2d11.027637290127604!3d45.43934674954621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477f5ed113d3116d%3A0x4d74893e405cc675!2sSvapo%20Monkey!5e0!3m2!1sit!2sit!4v1776245329666!5m2!1sit!2sit",
+        mapsLink: "https://maps.app.goo.gl/gV1KTXMqoieYqkxE8",
+        orari: [
+            { giorno: "Lunedì",    mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Martedì",   mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Mercoledì", mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Giovedì",   mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Venerdì",   mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Sabato",    mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:00"] },
+            { giorno: "Domenica",  chiuso: true }
+        ]
+    },
+    {
+        id: 2,
+        nome: "Golosine",
+        indirizzo: "Via Golosine, 53",
+        cap: "37136 Verona (VR)",
+        telefono: "0459230390",
+        mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d89614.10543382408!2d10.816209697265634!3d45.42061499999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4781e15e261dc4d5%3A0x6f90f5732cf3b5f4!2sSvapoMonkey%202.0%20GOLOSINE!5e0!3m2!1sit!2sit!4v1776245533343!5m2!1sit!2sit",
+        mapsLink: "https://maps.app.goo.gl/Gn5vJXn5Cr9mMnY69",
+        orari: [
+            { giorno: "Lunedì",    mattina: ["09:30","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Martedì",   mattina: ["09:30","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Mercoledì", mattina: ["09:30","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Giovedì",   mattina: ["09:30","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Venerdì",   mattina: ["09:30","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Sabato",    mattina: ["09:30","13:00"], pomeriggio: ["15:00","19:00"] },
+            { giorno: "Domenica",  chiuso: true }
+        ]
+    },
+    {
+        id: 3,
+        nome: "San Martino Buon Albergo",
+        indirizzo: "Piazzetta Napoleone, 13",
+        cap: "37036 San Martino Buon Albergo (VR)",
+        telefono: "0452244010",
+        mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d89611.17923407975!2d10.93916789726564!3d45.42245860000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477f5d00044ab76d%3A0xa028c10eb79db3ac!2sSvapomonkey%20San%20Martino%20Buon%20Albergo!5e0!3m2!1sit!2sit!4v1776246024698!5m2!1sit!2sit",
+        mapsLink: "https://maps.app.goo.gl/vQHFwVz4W4AJ1J3e8",
+        orari: [
+            { giorno: "Lunedì",    mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Martedì",   mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Mercoledì", mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Giovedì",   mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Venerdì",   mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Sabato",    mattina: ["09:00","13:00"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Domenica",  chiuso: true }
+        ]
+    },
+    {
+        id: 4,
+        nome: "Ca' di David",
+        indirizzo: "Via Belfiore, 78",
+        cap: "37135 Verona (VR)",
+        telefono: "045 112 2334",
+        mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d89614.10543382408!2d10.816209697265634!3d45.42061499999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477f5f6d545d4b0b%3A0x639634a855c32d08!2sSvapoMonkey%20CADIDAVID!5e0!3m2!1sit!2sit!4v1776246103724!5m2!1sit!2sit",
+        mapsLink: "https://maps.app.goo.gl/NwQ4nuyWJd8ppMmh6",
+        orari: [
+            { giorno: "Lunedì",    mattina: ["09:00","12:30"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Martedì",   mattina: ["09:00","12:30"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Mercoledì", mattina: ["09:00","12:30"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Giovedì",   mattina: ["09:00","12:30"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Venerdì",   mattina: ["09:00","12:30"], pomeriggio: ["15:00","19:30"] },
+            { giorno: "Sabato",    mattina: ["09:00","12:30"], pomeriggio: ["15:00","19:00"] },
+            { giorno: "Domenica",  chiuso: true }
+        ]
+    },
+    {
+        id: 5,
+        nome: "Isola della Scala",
+        indirizzo: "Via Giuseppe Garibaldi, 15/B",
+        cap: "37063 Isola della Scala (VR)",
+        telefono: "045 762 1661",
+        mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d89849.2063251604!2d10.854776297265625!3d45.2723022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477f639e610624d9%3A0xa5c3964f63d27a8e!2sSvapoMonkey%20Isola%20Della%20Scala!5e0!3m2!1sit!2sit!4v1776246168987!5m2!1sit!2sit",
+        mapsLink: "https://maps.app.goo.gl/JwaEBoVUTMyWAStq8",
+        orari: [
+            { giorno: "Lunedì",    mattina: ["09:30","12:30"], pomeriggio: ["15:30","19:30"] },
+            { giorno: "Martedì",   mattina: ["09:30","12:30"], pomeriggio: ["15:30","19:30"] },
+            { giorno: "Mercoledì", mattina: ["09:30","12:30"], pomeriggio: ["15:30","19:30"] },
+            { giorno: "Giovedì",   mattina: ["09:30","12:30"], pomeriggio: ["15:30","19:30"] },
+            { giorno: "Venerdì",   mattina: ["09:30","12:30"], pomeriggio: ["15:30","19:30"] },
+            { giorno: "Sabato",    mattina: ["09:30","12:30"], pomeriggio: ["15:30","19:30"] },
+            { giorno: "Domenica",  chiuso: true }
+        ]
+    }
+];
+
+// ===== UTILS =====
+function timeToMinutes(t) {
+    const [h, m] = t.split(":").map(Number);
+    return h * 60 + m;
+}
+
+function isOpenNow(orariNegozio) {
+    const now = new Date();
+    const dow = now.getDay();
+    const jsToIdx = [6, 0, 1, 2, 3, 4, 5];
+    const idx = jsToIdx[dow];
+    const oggi = orariNegozio[idx];
+    if (oggi.chiuso) return false;
+    const nowMin = now.getHours() * 60 + now.getMinutes();
+    if (oggi.mattina) {
+        const [am, cm] = [timeToMinutes(oggi.mattina[0]), timeToMinutes(oggi.mattina[1])];
+        if (nowMin >= am && nowMin < cm) return true;
+    }
+    if (oggi.pomeriggio) {
+        const [ap, cp] = [timeToMinutes(oggi.pomeriggio[0]), timeToMinutes(oggi.pomeriggio[1])];
+        if (nowMin >= ap && nowMin < cp) return true;
+    }
+    return false;
+}
+
+function buildOrariRows(orari) {
+    const now = new Date();
+    const jsToIdx = [6, 0, 1, 2, 3, 4, 5];
+    const idxOggi = jsToIdx[now.getDay()];
+
+    return orari.map((o, idx) => {
+        const isOggi = idx === idxOggi;
+        let orarioHtml = '';
+        if (o.chiuso) {
+            orarioHtml = `<span class="orari-chiuso">Chiuso</span>`;
+        } else {
+            if (o.mattina)     orarioHtml += `<span class="orari-badge">${o.mattina[0]} - ${o.mattina[1]}</span>`;
+            if (o.pomeriggio)  orarioHtml += `<span class="orari-badge">${o.pomeriggio[0]} - ${o.pomeriggio[1]}</span>`;
+        }
+        return `
+            <tr${isOggi ? ' class="oggi-row"' : ''}>
+                <td>${o.giorno}${isOggi ? ' ◄ Oggi' : ''}</td>
+                <td>${orarioHtml}</td>
+            </tr>`;
+    }).join('');
+}
+
+function buildStatoBadge(id, orari) {
+    const aperto = isOpenNow(orari);
+    return `<span id="stato-negozio-${id}" class="badge fs-6" style="background:${aperto ? '#198754' : '#dc3545'};color:white;padding:6px 14px;border-radius:20px;">
+        ${aperto ? '● Aperto' : '● Chiuso'}
+    </span>`;
+}
+
+function buildTelefonoHtml(telefono) {
+    if (!telefono) return '';
+    return `
+        <div class="mb-4">
+            <div class="d-flex align-items-start gap-3">
+                <div class="contact-icon-box"><i class="fas fa-phone"></i></div>
+                <div class="flex-grow-1">
+                    <h4 style="color:var(--color-secondary);font-weight:600;margin-bottom:0;">Telefono</h4>
+                    <p style="margin:0;"><a href="tel:${telefono.replace(/\s/g,'')}" style="color:rgba(245,245,245,0.9);text-decoration:none;">${telefono}</a></p>
+                </div>
+            </div>
+        </div>`;
+}
+
+function buildNegozioSection(n, isLast) {
+    return `
+    <section class="section-container">
+        <div class="card-glass mb-4 animate-on-scroll">
+            <h1 class="neg-name"><i class="fas fa-store"></i> SVAPOMONKEY &mdash; ${n.nome}</h1>
+        </div>
+        <div class="row g-4">
+            <!-- Mappa -->
+            <div class="col-lg-8">
+                <div class="card-glass animate-on-scroll">
+                    <h3 class="text-gradient mb-4" style="font-size:1.5rem;font-weight:600;">
+                        <i class="fas fa-map"></i> La Nostra Posizione
+                    </h3>
+                    <div class="map-container mt-3">
+                        <iframe
+                            src="${n.mapsEmbed}"
+                            width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Mappa SVAPOMONKEY ${n.nome}"></iframe>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <a href="${n.mapsLink}" target="_blank" rel="noopener noreferrer" class="btn-primary-glass">
+                            <i class="fas fa-directions"></i> Ottieni Indicazioni
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Contatti -->
+            <div class="col-lg-4">
+                <div class="card-glass h-100 animate-on-scroll">
+                    <h3 class="text-gradient mb-4" style="font-size:1.5rem;font-weight:600;">
+                        <i class="fas fa-info-circle"></i> Contatti
+                    </h3>
+                    <div class="mb-4">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="contact-icon-box"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="flex-grow-1">
+                                <h4 style="color:var(--color-primary);font-weight:600;margin-bottom:0;">Indirizzo</h4>
+                                <p style="color:rgba(245,245,245,0.9);margin:0;">${n.indirizzo}</p>
+                                <p style="color:rgba(245,245,245,0.9);margin:0;">${n.cap}</p>
+                            </div>
+                        </div>
+                    </div>
+                    ${buildTelefonoHtml(n.telefono)}
+                    <div class="mb-2">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="contact-icon-box"><i class="fas fa-clock"></i></div>
+                            <div class="flex-grow-1">
+                                <h4 style="color:rgba(255,187,0,0.99);font-weight:600;margin-bottom:4px;">Stato</h4>
+                                ${buildStatoBadge(n.id, n.orari)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Tabella orari -->
+        <div class="row mt-4">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="orari-glass-container animate-on-scroll">
+                    <table class="orari-table">
+                        <thead><tr><th>Giorno</th><th>Orari</th></tr></thead>
+                        <tbody>${buildOrariRows(n.orari)}</tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    ${!isLast ? '<hr class="divider-gradient">' : ''}`;
+}
+
+// ===== INIT =====
+document.addEventListener("DOMContentLoaded", function () {
+    // Genera sezioni negozi
+    const container = document.getElementById("negozi-container");
+    container.innerHTML = negozi.map((n, i) => buildNegozioSection(n, i === negozi.length - 1)).join('');
+
+    // Scroll animations
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!prefersReducedMotion) {
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) setTimeout(() => e.target.classList.add("animated"), 50); });
+        }, { threshold: 0.05, rootMargin: "0px 0px -30px 0px" });
+        document.querySelectorAll(".animate-on-scroll").forEach(el => obs.observe(el));
+    } else {
+        document.querySelectorAll(".animate-on-scroll").forEach(el => { el.style.opacity="1"; el.style.transform="none"; });
+    }
+
+    // Mobile menu close on link click
+    document.querySelectorAll(".navbar-link").forEach(link => {
+        link.addEventListener("click", () => {
+            if (window.innerWidth <= 1399) {
+                const burger = document.getElementById("burger");
+                if (burger) burger.checked = false;
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>
